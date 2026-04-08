@@ -324,13 +324,22 @@ function init() {
     textureLoader.setCrossOrigin('anonymous');
     const earthTexture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg');
 
-    // Primary Bodies: Yellow Sun & Textured Earth
-    m1Mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), new THREE.MeshBasicMaterial({color: 0xffdd00})); 
-    m2Mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), new THREE.MeshPhongMaterial({color: 0xffffff, map: earthTexture, shininess: 15})); 
-    moonMesh = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), new THREE.MeshPhongMaterial({color: 0xaaaaaa}));
-    
-    // Initial Tilt for Earth to make rotation correct visually
-    m2Mesh.rotation.x = Math.PI / 2; 
+    // 1. Create geometries
+    const sunGeo = new THREE.SphereGeometry(1, 64, 64);
+    const earthGeo = new THREE.SphereGeometry(1, 64, 64);
+    const moonGeo = new THREE.SphereGeometry(1, 16, 16);
+
+    // 2. Rotate the raw geometry data permanently so the poles point to the Z-axis (Up)
+    sunGeo.rotateX(Math.PI / 2);
+    earthGeo.rotateX(Math.PI / 2);
+    moonGeo.rotateX(Math.PI / 2);
+
+    // 3. Create the Meshes using the rotated geometries
+    m1Mesh = new THREE.Mesh(sunGeo, new THREE.MeshBasicMaterial({color: 0xffdd00})); 
+    m2Mesh = new THREE.Mesh(earthGeo, new THREE.MeshPhongMaterial({color: 0xffffff, map: earthTexture, shininess: 15})); 
+    moonMesh = new THREE.Mesh(moonGeo, new THREE.MeshPhongMaterial({color: 0xaaaaaa}));
+
+// (Notice we completely removed the m2Mesh.rotation.x line)
 
     scene.add(m1Mesh); scene.add(m2Mesh); scene.add(moonMesh);
 
