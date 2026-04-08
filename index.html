@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CR3BP Lagrange & Mission Simulator</title>
+    <title>Ultimate CR3BP Lagrange & Mission Simulator</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #050505; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         #canvas-container { width: 100vw; height: 100vh; }
@@ -66,6 +66,10 @@
         <div class="data"><span>Active Mission:</span> <span id="hud-mission" class="highlight">None</span></div>
         <div class="data"><span>Jacobi (C):</span> <span id="hud-c" class="highlight">0.0000</span></div>
         <div class="data"><span>Status:</span> <span id="hud-status" class="highlight" style="color:#aaa;">Standby</span></div>
+        <div class="data">
+          <span>Visitors:</span>
+          <span id="visitor-count" class="highlight">Loading...</span>
+        </div>
         <button class="btn-notes" onclick="toggleNotes()">📖 Read Physics Theory</button>
     </div>
     
@@ -713,5 +717,15 @@ function animate() {
     renderer.render(scene, camera);
 }
 </script>
+
+<script>
+// VISITOR COUNT SCRIPT ADDITION
+fetch("https://api.countapi.xyz/hit/lagrange-simulator/visits")
+  .then(res => res.json())
+  .then(res => {
+    document.getElementById("visitor-count").innerText = res.value;
+  });
+</script>
+
 </body>
 </html>
